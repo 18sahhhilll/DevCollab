@@ -1,244 +1,199 @@
-# DevCollab Hub 🚀
+# 🚀 DevCollab Hub
 
-A full-stack **Developer Collaboration Platform** built with the MERN stack. Helps developers find teammates, post project ideas, and collaborate in real-time.
-
---
-
-## Features
-
-- 🔐 **JWT Authentication** — Secure register/login with bcrypt password hashing
-- 👤 **Developer Profiles** — Skills, role, experience level, GitHub integration
-- 📁 **Project System** — Create, browse, filter, and manage projects
-- 🎯 **Skill Matching** — Algorithm calculates % match between your skills and project needs
-- 📬 **Application System** — Apply to projects, accept/reject applicants
-- 👥 **Team Management** — Auto-add accepted members, enforce team size limits
-- 💬 **Real-time Chat** — Socket.io group chat per project with typing indicators
-- 🔔 **Notifications** — Real-time alerts for applications and status changes
-- ⭐ **Bookmarks** — Save interesting projects
-- 🐙 **GitHub Integration** — Fetch repos, languages, follower stats
+> A full-stack **Developer Collaboration Platform** built with the MERN stack.
+> Connect, collaborate, and build projects with developers worldwide.
 
 ---
 
-## Tech Stack
+## 🌟 Overview
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 18 + Vite + Tailwind CSS |
-| Backend | Node.js + Express.js |
-| Database | MongoDB + Mongoose |
-| Auth | JWT + bcryptjs |
-| Real-time | Socket.io |
-| HTTP Client | Axios |
-| Icons | Lucide React |
+DevCollab Hub helps developers:
+
+* 🤝 Find teammates based on skills
+* 💡 Post and discover project ideas
+* 💬 Collaborate in real-time
+* 📊 Track applications and team progress
 
 ---
 
-## Project Structure
+## ✨ Features
+
+* 🔐 **Authentication** — JWT-based login/register with bcrypt security
+* 👤 **Developer Profiles** — Skills, experience, GitHub integration
+* 📁 **Project Management** — Create, browse, filter projects
+* 🎯 **Skill Matching System** — Smart % match algorithm
+* 📬 **Application System** — Apply / Accept / Reject
+* 👥 **Team Management** — Auto team building with limits
+* 💬 **Real-time Chat** — Socket.io powered project chats
+* 🔔 **Notifications** — Live alerts for updates
+* ⭐ **Bookmarks** — Save projects
+* 🐙 **GitHub Integration** — Repo + language insights
+
+---
+
+## 🧱 Tech Stack
+
+| Layer          | Technology                  |
+| -------------- | --------------------------- |
+| Frontend       | React + Vite + Tailwind CSS |
+| Backend        | Node.js + Express.js        |
+| Database       | MongoDB + Mongoose          |
+| Authentication | JWT + bcryptjs              |
+| Real-time      | Socket.io                   |
+| API Client     | Axios                       |
+| Icons          | Lucide React                |
+
+---
+
+## 📂 Project Structure
 
 ```
 dev-collab-hub/
 ├── backend/
-│   ├── server.js                  # Express + Socket.io entry
-│   ├── .env.example               # Environment variable template
-│   └── src/
-│       ├── models/
-│       │   ├── User.js
-│       │   ├── Project.js
-│       │   ├── Application.js
-│       │   └── Message.js
-│       ├── routes/
-│       │   ├── auth.js
-│       │   ├── users.js
-│       │   ├── projects.js
-│       │   ├── applications.js
-│       │   └── chat.js
-│       ├── controllers/
-│       │   ├── authController.js
-│       │   ├── userController.js
-│       │   ├── projectController.js
-│       │   ├── applicationController.js
-│       │   └── chatController.js
-│       ├── middleware/
-│       │   └── auth.js
-│       ├── services/
-│       │   ├── matchingService.js
-│       │   └── githubService.js
-│       └── socket/
-│           └── socketHandler.js
-└── frontend/
-    ├── index.html
-    ├── vite.config.js
-    └── src/
-        ├── App.jsx
-        ├── main.jsx
-        ├── index.css
-        ├── context/
-        │   ├── AuthContext.jsx
-        │   └── SocketContext.jsx
-        ├── services/
-        │   ├── api.js
-        │   └── socket.js
-        ├── components/
-        │   ├── Layout.jsx
-        │   ├── ProjectCard.jsx
-        │   ├── SkillTag.jsx
-        │   ├── MatchBadge.jsx
-        │   ├── ApplicationModal.jsx
-        │   ├── StatsCard.jsx
-        │   └── NotificationPanel.jsx
-        ├── pages/
-        │   ├── Login.jsx
-        │   ├── Register.jsx
-        │   ├── Dashboard.jsx
-        │   ├── Projects.jsx
-        │   ├── ProjectDetail.jsx
-        │   ├── CreateProject.jsx
-        │   ├── Profile.jsx
-        │   ├── EditProfile.jsx
-        │   ├── Chat.jsx
-        │   └── UserProfile.jsx
-        └── utils/
-            └── match.js
+├── frontend/
+└── README.md
+```
+
+> Clean MVC architecture with services layer & socket integration
+
+---
+
+## ⚙️ Setup Instructions
+
+### 🔹 1. Clone the repo
+
+```bash
+git clone https://github.com/18sahhhilll/DevCollab.git
+cd DevCollab
 ```
 
 ---
 
-## Setup Instructions
+### 🔹 2. Backend Setup
 
-### Prerequisites
-- Node.js v18+
-- MongoDB (local or MongoDB Atlas)
-- Git
-
-### 1. Clone and navigate
-```bash
-cd dev-collab-hub
-```
-
-### 2. Backend Setup
 ```bash
 cd backend
 npm install
 ```
 
-Copy `.env.example` to `.env` and fill in your values:
-```bash
-cp .env.example .env
-```
+Create `.env` file:
 
-`.env` variables:
 ```
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/dev-collab-hub
-JWT_SECRET=your_super_secret_key
-JWT_EXPIRE=7d
-GITHUB_TOKEN=ghp_your_optional_token   # increases GitHub API rate limit
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
 CLIENT_URL=http://localhost:5173
 ```
 
-Start the backend:
+Run backend:
+
 ```bash
 npm run dev
 ```
 
-### 3. Frontend Setup
+---
+
+### 🔹 3. Frontend Setup
+
 ```bash
-cd ../frontend
+cd frontend
 npm install
 npm run dev
 ```
 
-### 4. Open in browser
-Visit: **http://localhost:5173**
+---
+
+### 🔹 4. Open App
+
+👉 http://localhost:5173
 
 ---
 
-## API Documentation
+## 📡 API Overview
 
 ### Auth
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| POST | `/api/auth/register` | — | Register new user |
-| POST | `/api/auth/login` | — | Login, returns JWT |
-| GET | `/api/auth/me` | ✅ | Get current user |
 
-### Users
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| GET | `/api/users/profile` | ✅ | Own profile |
-| PUT | `/api/users/profile` | ✅ | Update profile |
-| GET | `/api/users/dashboard` | ✅ | Dashboard data |
-| GET | `/api/users/notifications` | ✅ | Notifications |
-| PUT | `/api/users/notifications/read` | ✅ | Mark all read |
-| POST | `/api/users/bookmark/:projectId` | ✅ | Toggle bookmark |
-| GET | `/api/users/:id` | — | Public profile |
-| GET | `/api/users/:id/github` | — | GitHub data |
+* POST `/api/auth/register`
+* POST `/api/auth/login`
 
 ### Projects
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| GET | `/api/projects` | — | List all (with filters) |
-| POST | `/api/projects` | ✅ | Create project |
-| GET | `/api/projects/match` | ✅ | Skill-matched projects |
-| GET | `/api/projects/:id` | — | Project detail |
-| PUT | `/api/projects/:id` | ✅ | Update (owner only) |
-| DELETE | `/api/projects/:id` | ✅ | Delete (owner only) |
 
-Query params for `GET /api/projects`: `status`, `category`, `skill`, `search`
+* GET `/api/projects`
+* POST `/api/projects`
+* GET `/api/projects/match`
 
 ### Applications
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| POST | `/api/applications` | ✅ | Apply to project |
-| GET | `/api/applications/my` | ✅ | Own applications |
-| GET | `/api/applications/project/:projectId` | ✅ | Project's applicants (owner) |
-| PUT | `/api/applications/:id` | ✅ | Accept/Reject |
+
+* Apply, accept, reject users
 
 ### Chat
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| GET | `/api/chat/:projectId` | ✅ | Fetch messages (members only) |
 
-### Socket.io Events
-
-**Client → Server:**
-- `join_project` `{ projectId }` — Join a project room
-- `send_message` `{ projectId, content }` — Send message
-- `typing` `{ projectId }` — Start typing
-- `stop_typing` `{ projectId }` — Stop typing
-- `leave_project` `{ projectId }` — Leave room
-
-**Server → Client:**
-- `new_message` — New chat message
-- `user_typing` — Someone is typing
-- `user_stop_typing` — Someone stopped typing
-- `user_joined` — User joined project room
-- `notification` — Real-time notification
+* Real-time messaging via Socket.io
 
 ---
 
-## Matching Algorithm
+## 🧠 Matching Algorithm
 
-Located in `backend/src/services/matchingService.js`:
-
-```
-matchScore = (intersect(userSkills, requiredSkills).length / requiredSkills.length) * 100
+```js
+matchScore = (matchedSkills / requiredSkills) * 100
 ```
 
-- Case-insensitive comparison
-- Returns `{ score, matchedSkills, missingSkills }`
-- Results sorted by score descending on `/api/projects/match`
+✔ Case-insensitive
+✔ Sorted results
+✔ Returns matched + missing skills
 
 ---
 
-## Environment Variables Reference
+## 🔐 Environment Variables
 
-| Variable | Required | Description |
-|---|---|---|
-| `PORT` | No (5000) | Backend port |
-| `MONGO_URI` | Yes | MongoDB connection string |
-| `JWT_SECRET` | Yes | Secret for JWT signing |
-| `JWT_EXPIRE` | No (7d) | Token expiry |
-| `GITHUB_TOKEN` | No | GitHub PAT for higher API rate limit |
-| `CLIENT_URL` | No | Frontend URL for CORS |
-#
+Create `.env` in backend:
+
+```
+MONGO_URI=your_database_url
+JWT_SECRET=your_secret
+```
+
+---
+
+## 📸 Screenshots (Add later)
+
+> Add UI screenshots here to improve your repo 🔥
+
+---
+
+## 🚀 Future Improvements
+
+* 🌐 Deployment (Render / Vercel)
+* 🤖 AI skill suggestions
+* 📊 Advanced analytics dashboard
+* 🔍 Smart search & recommendations
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome.
+For major changes, open an issue first.
+
+---
+
+## 👨‍💻 Author
+
+**Sahil Sangle**
+
+* 💼 Aspiring Full Stack Developer
+* 🚀 MERN Stack Enthusiast
+
+---
+
+## ⭐ Support
+
+If you like this project:
+
+👉 Star the repo
+👉 Fork it
+👉 Share it
+
+---
+
+🔥 Built with passion using MERN Stack
