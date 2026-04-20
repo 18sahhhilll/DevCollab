@@ -3,23 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import SkillTag from '../components/SkillTag';
-import { Edit2, ExternalLink, CheckCircle, Github, Globe, Linkedin, BookOpen } from 'lucide-react';
+import { Edit2, ExternalLink, CheckCircle, Github, Globe, LinkedinIcon, BookOpen } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const EXP_MAP = {
-  Beginner:     { color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0' },
+  Beginner: { color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0' },
   Intermediate: { color: '#2563eb', bg: '#eff6ff', border: '#bfdbfe' },
-  Advanced:     { color: '#d97706', bg: '#fffbeb', border: '#fde68a' },
-  Expert:       { color: '#dc2626', bg: '#fef2f2', border: '#fecaca' },
+  Advanced: { color: '#d97706', bg: '#fffbeb', border: '#fde68a' },
+  Expert: { color: '#dc2626', bg: '#fef2f2', border: '#fecaca' },
 };
 
 export default function Profile() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [profile, setProfile]             = useState(null);
-  const [github, setGithub]               = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [github, setGithub] = useState(null);
   const [githubLoading, setGithubLoading] = useState(false);
-  const [loading, setLoading]             = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {

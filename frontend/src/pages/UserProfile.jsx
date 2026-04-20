@@ -3,20 +3,20 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import SkillTag from '../components/SkillTag';
 import toast from 'react-hot-toast';
-import { ArrowLeft, ExternalLink, CheckCircle, Github, Globe, Linkedin, BookOpen } from 'lucide-react';
+import { ArrowLeft, ExternalLink, CheckCircle, Github, Globe, LinkedinIcon, BookOpen } from 'lucide-react';
 
 const EXP_MAP = {
-  Beginner:     { color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0' },
+  Beginner: { color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0' },
   Intermediate: { color: '#2563eb', bg: '#eff6ff', border: '#bfdbfe' },
-  Advanced:     { color: '#d97706', bg: '#fffbeb', border: '#fde68a' },
-  Expert:       { color: '#dc2626', bg: '#fef2f2', border: '#fecaca' },
+  Advanced: { color: '#d97706', bg: '#fffbeb', border: '#fde68a' },
+  Expert: { color: '#dc2626', bg: '#fef2f2', border: '#fecaca' },
 };
 
 export default function UserProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
-  const [github, setGithub]   = useState(null);
+  const [github, setGithub] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function UserProfile() {
         const { data } = await api.get(`/users/${id}`);
         setProfile(data);
         if (data.githubUsername) {
-          try { const g = await api.get(`/users/${id}/github`); setGithub(g.data); } catch {}
+          try { const g = await api.get(`/users/${id}/github`); setGithub(g.data); } catch { }
         }
       } catch {
         toast.error('User not found');
