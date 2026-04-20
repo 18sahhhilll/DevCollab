@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import SkillTag from '../components/SkillTag';
 import toast from 'react-hot-toast';
-import { ArrowLeft, ExternalLink, CheckCircle, Github, Globe, Linkedin, BookOpen } from "lucide-react";
+import { ArrowLeft, ExternalLink, CheckCircle, Github, Globe, BookOpen } from "lucide-react";
 const EXP_MAP = {
   Beginner: { color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0' },
   Intermediate: { color: '#2563eb', bg: '#eff6ff', border: '#bfdbfe' },
@@ -95,7 +95,7 @@ export default function UserProfile() {
           {profile.linkedinUrl && (
             <a href={profile.linkedinUrl} target="_blank" rel="noopener noreferrer"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--text-secondary)', border: '1px solid var(--border)', padding: '0.3rem 0.75rem', borderRadius: 'var(--radius-md)', background: 'var(--bg-muted)', textDecoration: 'none' }}>
-              <Linkedin size={13} /> LinkedIn
+              <Globe size={13} /> LinkedIn
             </a>
           )}
         </div>
