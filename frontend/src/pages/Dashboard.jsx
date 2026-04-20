@@ -4,18 +4,20 @@ import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import StatsCard from '../components/StatsCard';
 import ProjectCard from '../components/ProjectCard';
-import MatchBadge from '../components/MatchBadge';
-import { FolderGit2, Users, Send, Zap, Plus, ArrowRight, CheckCircle, Clock, XCircle } from 'lucide-react';
+import { FolderGit2, Send, Zap, Plus, ArrowRight, CheckCircle, Clock, XCircle, LayoutDashboard } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-// const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-const STATUS_ICON = { accepted: <CheckCircle size={14} color="#10b981" />, rejected: <XCircle size={14} color="#ef4444" />, pending: <Clock size={14} color="#f59e0b" /> };
-const STATUS_COLOR = { accepted: '#10b981', rejected: '#ef4444', pending: '#f59e0b' };
+const STATUS_ICON  = {
+  accepted: <CheckCircle size={13} color="#16a34a" />,
+  rejected: <XCircle    size={13} color="#dc2626" />,
+  pending:  <Clock      size={13} color="#d97706" />,
+};
+const STATUS_LABEL = { accepted: '#16a34a', rejected: '#dc2626', pending: '#d97706' };
 
 export default function Dashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [data, setData] = useState({ ownProjects: [], applications: [] });
+  const [data, setData]     = useState({ ownProjects: [], applications: [] });
   const [matched, setMatched] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -28,97 +30,121 @@ export default function Dashboard() {
         ]);
         setData(dashRes.data);
         setMatched(matchRes.data.slice(0, 3));
-      } catch { toast.error('Failed to load dashboard'); }
-      finally { setLoading(false); }
+      } catch {
+        toast.error('Failed to load dashboard');
+      } finally {
+        setLoading(false);
+      }
     };
     load();
   }, []);
 
   if (loading) return <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}><div className="spinner" /></div>;
 
-  const pendingApps = data.applications.filter(a => a.status === 'pending').length;
-  const acceptedApps = data.applications.filter(a => a.status === 'accepted').length;
+  const pendingApps  = data.applications.filter((a) => a.status === 'pending').length;
+  const acceptedApps = data.applications.filter((a) => a.status === 'accepted').length;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }} className="animate-fade">
-      {/* Hero greeting */}
-      <div style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08))', border: '1px solid rgba(99,102,241,0.2)', borderRadius: '1rem', padding: '2rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-          <div>
-            <h1 style={{ fontSize: '1.875rem', marginBottom: '0.375rem' }}>
-              Hey, <span className="gradient-text">{user?.name?.split(' ')[0]}</span> 👋
-            </h1>
-            <p style={{ fontSize: '0.95rem' }}>
-              {user?.skills?.length > 0
-                ? `You have ${user.skills.length} skills listed — let's find your next project!`
-                : 'Complete your profile to start matching with projects.'}
-            </p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }} className="animate-fade">
+
+      {/* ── Greeting banner ── */}
+      <div className="card" style={{ padding: '1.625rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+            <LayoutDashboard size={16} style={{ color: 'var(--text-muted)' }} />
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Dashboard</span>
           </div>
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
-            <button className="btn-secondary" onClick={() => navigate('/profile/edit')}>Edit Profile</button>
-            <button className="btn-primary" onClick={() => navigate('/projects/new')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Plus size={16} /> New Project
-            </button>
-          </div>
+          <h1 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.25rem' }}>
+            Welcome back, <span style={{ color: 'var(--accent-blue)' }}>{user?.name?.split(' ')[0]}</span>
+          </h1>
+          <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+            {user?.skills?.length > 0
+              ? `${user.skills.length} skills listed · Here's your activity overview`
+              : 'Complete your profile to start matching with projects.'}
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: '0.625rem', flexWrap: 'wrap' }}>
+          <button className="btn-secondary" style={{ fontSize: '0.825rem' }} onClick={() => navigate('/profile/edit')}>Edit Profile</button>
+          <button className="btn-primary"   style={{ fontSize: '0.825rem' }} onClick={() => navigate('/projects/new')}>
+            <Plus size={14} /> New Project
+          </button>
         </div>
       </div>
 
-      {/* Stats */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
-        <StatsCard icon={FolderGit2} label="My Projects" value={data.ownProjects.length} color="#6366f1" />
-        <StatsCard icon={Send} label="Applications" value={data.applications.length} color="#8b5cf6" />
-        <StatsCard icon={Clock} label="Pending" value={pendingApps} color="#f59e0b" />
-        <StatsCard icon={CheckCircle} label="Accepted" value={acceptedApps} color="#10b981" />
+      {/* ── Stats row ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '0.875rem' }}>
+        <StatsCard icon={FolderGit2}    label="My Projects"   value={data.ownProjects.length}  color="#2563eb" />
+        <StatsCard icon={Send}          label="Applications"  value={data.applications.length} color="#7c3aed" />
+        <StatsCard icon={Clock}         label="Pending"       value={pendingApps}              color="#d97706" />
+        <StatsCard icon={CheckCircle}   label="Accepted"      value={acceptedApps}             color="#16a34a" />
       </div>
 
+      {/* ── Two-column content ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
-        {/* Top Matches */}
+
+        {/* Top skill matches */}
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <h2 style={{ fontSize: '1.125rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Zap size={18} color="#f59e0b" /> Top Matches
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.875rem' }}>
+            <h2 style={{ fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700 }}>
+              <Zap size={16} color="#d97706" /> Top Matches
             </h2>
-            <button onClick={() => navigate('/projects')} style={{ background: 'transparent', border: 'none', color: 'var(--accent-light)', fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
-              View all <ArrowRight size={13} />
+            <button
+              onClick={() => navigate('/feed')}
+              style={{ background: 'transparent', border: 'none', color: 'var(--accent-blue)', fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '3px', fontFamily: 'Inter, sans-serif' }}
+            >
+              View feed <ArrowRight size={13} />
             </button>
           </div>
+
           {matched.length === 0 ? (
-            <div className="card" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-              <Zap size={32} style={{ margin: '0 auto 0.75rem', opacity: 0.3 }} />
-              <p>Add skills to your profile to see matches</p>
-              <button className="btn-primary" style={{ marginTop: '1rem', fontSize: '0.85rem' }} onClick={() => navigate('/profile/edit')}>Add Skills</button>
+            <div className="card" style={{ padding: '2rem', textAlign: 'center' }}>
+              <Zap size={28} style={{ margin: '0 auto 0.75rem', color: 'var(--text-muted)' }} />
+              <p style={{ fontSize: '0.875rem', marginBottom: '0.875rem' }}>Add skills to see matched projects</p>
+              <button className="btn-primary" style={{ fontSize: '0.8rem' }} onClick={() => navigate('/profile/edit')}>Add Skills</button>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {matched.map(p => <ProjectCard key={p._id} project={p} />)}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+              {matched.map((p) => <ProjectCard key={p._id} project={p} />)}
             </div>
           )}
         </div>
 
-        {/* My Projects & Applications */}
+        {/* Right column */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+
           {/* My Projects */}
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h2 style={{ fontSize: '1.125rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <FolderGit2 size={18} color="#6366f1" /> My Projects
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.875rem' }}>
+              <h2 style={{ fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700 }}>
+                <FolderGit2 size={16} color="#2563eb" /> My Projects
               </h2>
-              <button onClick={() => navigate('/projects/new')} style={{ background: 'transparent', border: 'none', color: 'var(--accent-light)', fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <button
+                onClick={() => navigate('/projects/new')}
+                style={{ background: 'transparent', border: 'none', color: 'var(--accent-blue)', fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '3px', fontFamily: 'Inter, sans-serif' }}
+              >
                 <Plus size={13} /> New
               </button>
             </div>
+
             {data.ownProjects.length === 0 ? (
-              <div className="card" style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
-                No projects yet. <span style={{ color: 'var(--accent-light)', cursor: 'pointer' }} onClick={() => navigate('/projects/new')}>Create one!</span>
+              <div className="card" style={{ padding: '1.5rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+                No projects yet.{' '}
+                <span style={{ color: 'var(--accent-blue)', cursor: 'pointer' }} onClick={() => navigate('/projects/new')}>Create one →</span>
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
-                {data.ownProjects.slice(0, 3).map(p => (
-                  <div key={p._id} className="card" style={{ padding: '1rem', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                    onClick={() => navigate(`/projects/${p._id}`)}>
-                    <div>
-                      <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{p.title}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' }}>{p.members?.length || 1} member{p.members?.length !== 1 ? 's' : ''}</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {data.ownProjects.slice(0, 4).map((p) => (
+                  <div
+                    key={p._id}
+                    className="card card-clickable"
+                    style={{ padding: '0.875rem 1rem', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                    onClick={() => navigate(`/projects/${p._id}`)}
+                  >
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontWeight: 600, fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.title}</div>
+                      <div style={{ fontSize: '0.73rem', color: 'var(--text-muted)', marginTop: '1px' }}>
+                        {p.members?.length || 1} member{p.members?.length !== 1 ? 's' : ''}
+                      </div>
                     </div>
                     <span className={`status-${p.status}`}>{p.status}</span>
                   </div>
@@ -127,25 +153,39 @@ export default function Dashboard() {
             )}
           </div>
 
-          {/* Applications */}
+          {/* Recent Applications */}
           <div>
-            <h2 style={{ fontSize: '1.125rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Send size={18} color="#8b5cf6" /> My Applications
-            </h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.875rem' }}>
+              <h2 style={{ fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700 }}>
+                <Send size={16} color="#7c3aed" /> Applications
+              </h2>
+              <button
+                onClick={() => navigate('/applications')}
+                style={{ background: 'transparent', border: 'none', color: 'var(--accent-blue)', fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '3px', fontFamily: 'Inter, sans-serif' }}
+              >
+                View all <ArrowRight size={13} />
+              </button>
+            </div>
+
             {data.applications.length === 0 ? (
-              <div className="card" style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
-                You haven't applied to any projects yet.
+              <div className="card" style={{ padding: '1.5rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+                No applications yet.{' '}
+                <span style={{ color: 'var(--accent-blue)', cursor: 'pointer' }} onClick={() => navigate('/feed')}>Browse feed →</span>
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
-                {data.applications.slice(0, 4).map(app => (
-                  <div key={app._id} className="card" style={{ padding: '1rem', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                    onClick={() => navigate(`/projects/${app.project?._id}`)}>
-                    <div style={{ overflow: 'hidden' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {data.applications.slice(0, 4).map((app) => (
+                  <div
+                    key={app._id}
+                    className="card card-clickable"
+                    style={{ padding: '0.875rem 1rem', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                    onClick={() => navigate(`/projects/${app.project?._id}`)}
+                  >
+                    <div style={{ overflow: 'hidden', minWidth: 0 }}>
                       <div style={{ fontWeight: 600, fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{app.project?.title}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' }}>{app.project?.category}</div>
+                      <div style={{ fontSize: '0.73rem', color: 'var(--text-muted)', marginTop: '1px' }}>{app.project?.category}</div>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.78rem', color: STATUS_COLOR[app.status], flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.775rem', color: STATUS_LABEL[app.status], flexShrink: 0 }}>
                       {STATUS_ICON[app.status]} {app.status}
                     </div>
                   </div>
