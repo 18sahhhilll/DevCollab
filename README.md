@@ -153,11 +153,9 @@ MONGO_URI=your_database_url
 JWT_SECRET=your_secret
 ```
 
----
 
-## 📸 Screenshots (Add later)
 
-> Add UI screenshots here to improve your repo 🔥
+
 
 ---
 
